@@ -114,7 +114,7 @@ with tab1:
                         'longitude': lon
                     }
                     collection.insert_one(estabelecimento)
-                    st.success("Estabelecimento cadastrado com sucesso na coleção 'Estabelecimentos'!")
+                    st.success("Estabelecimento cadastrado com sucesso!")
                 else:
                     st.error(f"Não é possível cadastrar. Existe um estabelecimento a {distancia:.2f} km de distância (mínimo 2 km requerido).")
 
