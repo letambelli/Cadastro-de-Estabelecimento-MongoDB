@@ -1,15 +1,15 @@
 import streamlit as st
 from pymongo import MongoClient
 from haversine import haversine
-import certifi  # Necessário para conexão segura com Atlas
+import certifi
 
-# Configuração do MongoDB
+# Configuração do MongoDB - agora usando a database "Cadastros" e coleção "Estabelecimentos"
 def get_db_connection():
     CONNECTION_STRING = "mongodb+srv://pvitor66:fthCckusnQWvwiPz@estabelecimentos.y9eps6w.mongodb.net/?retryWrites=true&w=majority&appName=Estabelecimentos"
     
     client = MongoClient(CONNECTION_STRING, tlsCAFile=certifi.where())
-    db = client['estabelecimentos_db']
-    return db.estabelecimentos
+    db = client['Cadastros']  # Alterado para usar a database "Cadastros"
+    return db['Estabelecimentos']  # Alterado para usar a coleção "Estabelecimentos"
 
 collection = get_db_connection()
 
@@ -54,11 +54,6 @@ with st.form("cadastro_form"):
                     'longitude': lon
                 }
                 collection.insert_one(estabelecimento)
-                st.success("Estabelecimento cadastrado com sucesso!")
+                st.success("Estabelecimento cadastrado com sucesso na coleção 'Estabelecimentos'!")
             else:
                 st.error(f"Não é possível cadastrar. Existe um estabelecimento a {distancia:.2f} km de distância (mínimo 2 km requerido).")
-
-# Visualização dos estabelecimentos cadastrados
-st.header("Estabelecimentos Cadastrados")
-estabelecimentos = list(collection.find({}, {'_id': 0}))
-st.table(estabelecimentos)
